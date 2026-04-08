@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+        <meta
+            name="description"
+            content="Light Mode es una landing page moderna que ofrece servicios de planificación empresarial, redes sociales y branding para impulsar el crecimiento de tu negocio." />
+        <link rel="stylesheet" href="style" />
+        <title>Handyman Services | Soluciones Profesionales</title>
+
+        <style>
+            body {
+                background: #f5f7fa;
+            }
+
+            /* ===== CONTAINER ===== */
+            .container {
+                max-width: 1200px;
+                margin: auto;
+                padding: 24px;
+                border-radius: 20px;
+                padding: 60px;
+            }
+
+            /* ===== NAVBAR ===== */
+            .navbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            /* logo icono */
+            .navbar__logo {
+                display: flex;
+                align-items: center;
+            }
+
+            /* menú */
+            .navbar__menu {
+                display: flex;
+                list-style: none;
+                gap: 30px;
+            }
+
+            /* links */
+            .navbar__link {
+                text-decoration: none;
+                color: black;
+                font-weight: bold;
+            }
+
+            .navbar__link:hover {
+                color: #ffc107;
+            }
+
+            /* botón derecha */
+            .navbar__cta {
+                display: flex;
+            }
+
+            .navbar__button {
+                background: black;
+                color: white;
+                padding: 7px 14px;
+                border-radius: 20px;
+                text-decoration: none;
+                font-weight: bold;
+            }
+
+            /* ===== SHOWCASE ===== */
+            .showcase {
+                background: url("iimg/pexels-photo.jpeg") center/cover no-repeat;
+                height: 80vh;
+                display: flex;
+                align-items: center;
+                color: white;
+                border-radius: 30px;
+                padding: 40px;
+            }
+
+            .showcase__content {
+                max-width: 600px;
+            }
+
+            .showcase__title {
+                font-size: 50px;
+                margin-bottom: 20px;
+            }
+
+            .showcase__text {
+                margin-bottom: 20px;
+            }
+
+            .showcase__btn {
+                display: inline-block;
+                background: #1a5799;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 768px) {
+                .navbar {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+
+                .navbar__menu {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+
+                .showcase {
+                    height: auto;
+                    text-align: center;
+                }
+
+                .showcase__title {
+                    font-size: 30px;
+                }
+            }
+
+            /* ===== ABOUT ===== */
+            .about {
+                margin-top: 50px;
+            }
+
+            /* fila principal */
+            .about__row {
+                display: flex;
+                gap: 20px;
+            }
+
+            /* imagen izquierda */
+            .about__image {
+                flex: 1;
+                min-height: 300px;
+                background: url("iimg/pexels-photo.jpeg") center/cover no-repeat;
+                border-radius: 20px;
+            }
+
+            /* contenido derecha */
+            .about__content {
+                flex: 1;
+            }
+
+            /* título */
+            .about__title {
+                margin-bottom: 10px;
+            }
+
+            /* texto */
+            .about__text {
+                margin-bottom: 20px;
+            }
+
+            /* botón */
+            .about__btn {
+                display: inline-block;
+                background: #1a5799;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+                margin-bottom: 20px;
+            }
+
+            /* mini cards */
+            .about__features {
+                display: flex;
+                gap: 10px;
+            }
+
+            /* cada mini card */
+            .about__feature {
+                flex: 1;
+                background: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            /* títulos */
+            .about__feature-title {
+                color: #1a5799;
+                margin-bottom: 10px;
+            }
+
+            /* texto */
+            .about__feature-text {
+                font-size: 14px;
+                color: #555;
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 768px) {
+                .about__row {
+                    flex-direction: column;
+                }
+
+                .about__features {
+                    flex-direction: column;
+                }
+            }
+            /* ===== SERVICES ===== */
+            .services {
+                margin-top: 60px;
+            }
+
+            /* título */
+            .services__title {
+                text-align: center;
+                margin-bottom: 30px;
+                color: #1a5799;
+            }
+
+            /* GRID (lo importante 🔥) */
+            .services__grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            /* card */
+            .services__card {
+                background: #f9f9f9;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                transition: transform 0.3s ease;
+            }
+
+            .services__card:hover {
+                transform: translateY(-5px);
+            }
+
+            /* imagen */
+            .services__img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin-bottom: 10px;
+            }
+
+            /* título card */
+            .services__card-title {
+                color: #1a5799;
+                margin-bottom: 10px;
+            }
+
+            /* texto */
+            .services__card-text {
+                font-size: 14px;
+                color: #555;
+            }
+
+            /* botón */
+            .services__cta {
+                margin-top: 30px;
+                text-align: center;
+            }
+
+            .services__btn {
+                display: inline-block;
+                background: #1a5799;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 768px) {
+                .services__grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* ===== TESTIMONIALS ===== */
+
+            .testimonials {
+                margin-top: 60px;
+            }
+
+            .testimonials__container {
+                max-width: 1200px;
+                margin: auto;
+                padding: 10px;
+                background: #f5f7fa;
+            }
+
+            .testimonials__title {
+                text-align: center;
+                margin-bottom: 30px;
+                color: #1a5799;
+            }
+
+            /* fila */
+            .testimonials__row {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            /* columna */
+            .testimonials__col {
+                flex: 1 1 30%;
+            }
+
+            /* card */
+            .testimonials__card {
+                background: white;
+                padding: 25px;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                transition: transform 0.3s ease;
+            }
+
+            .testimonials__card:hover {
+                transform: translateY(-5px);
+            }
+
+            /* texto */
+            .testimonials__text {
+                font-style: italic;
+                margin-bottom: 10px;
+                color: #555;
+            }
+
+            /* nombre */
+            .testimonials__name {
+                color: #1a5799;
+            }
+
+            /* botón */
+            .testimonials__actions {
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .testimonials__actions .btn {
+                display: inline-block;
+                background: #1a5799;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
+
+            /* responsive */
+            @media (max-width: 768px) {
+                .testimonials__col {
+                    flex: 1 1 100%;
+                }
+            }
+
+            /* ===== BANNER ===== */
+
+            .banner {
+                margin-top: 50px;
+            }
+
+            .banner__container {
+                max-width: 1200px;
+                margin: auto;
+                padding: 10px;
+                background: #f5f7fa;
+            }
+
+            .banner__row {
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                margin-bottom: 40px;
+            }
+
+            /* izquierda */
+            .banner__image {
+                flex: 1;
+                height: 400px;
+                background: url("iimg/How-To-Start-A-Handyman-Business-1.jpg") no-repeat center center/cover;
+                border-radius: 20px;
+            }
+
+            /* derecha */
+            .banner__content {
+                flex: 1;
+            }
+
+            .banner__title {
+                margin-bottom: 10px;
+                color: #1a5799;
+            }
+
+            .banner__text {
+                margin-bottom: 20px;
+            }
+
+            /* ===== SLIDER ===== */
+
+            .banner__slider {
+                position: relative;
+                width: 100%;
+                height: 200px;
+                overflow: hidden;
+                border-radius: 15px;
+            }
+
+            .banner__slide {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0;
+                transition: opacity 0.5s ease;
+            }
+
+            .banner__slide--active {
+                opacity: 1;
+            }
+
+            /* responsive */
+            @media (max-width: 768px) {
+                .banner__row {
+                    flex-direction: column;
+                }
+
+                .banner__image {
+                    height: 250px;
+                }
+            }
+
+            /* BLOG */
+            /* utilidades */
+            .blog {
+                padding: 60px 0;
+            }
+
+            .blog__title {
+                text-align: center;
+                margin-bottom: 40px;
+                font-size: 2rem;
+            }
+
+            .blog__row {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .blog__card {
+                background: #fff;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                transition: 0.3s;
+            }
+
+            .blog__card:hover {
+                transform: translateY(-5px);
+            }
+
+            .blog__card-img img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+
+            .blog__card-title {
+                margin-bottom: 10px;
+                font-size: 1.2rem;
+                color: #1a5799;
+            }
+
+            .blog__card-text {
+                color: #555;
+                font-size: 0.95rem;
+                line-height: 1.5;
+            }
+
+            /* ===== FOOTER ===== */
+            .footer {
+                margin-top: 60px;
+            }
+
+            .footer__row {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .footer__col {
+                flex: 1 1 30%;
+            }
+
+            /* logo */
+            .footer__logo {
+                color: #1a5799;
+                margin-bottom: 10px;
+            }
+
+            /* títulos */
+            .footer__title {
+                margin-bottom: 10px;
+                color: #1a5799;
+            }
+
+            /* texto */
+            .footer__text {
+                color: #555;
+                font-size: 14px;
+            }
+
+            /* lista */
+            .footer__list {
+                list-style: none;
+                padding: 0;
+            }
+
+            .footer__list li {
+                margin-bottom: 8px;
+            }
+
+            .footer__list a {
+                text-decoration: none;
+                color: #555;
+            }
+
+            .footer__list a:hover {
+                color: #1a5799;
+            }
+
+            /* bottom */
+            .footer__bottom {
+                text-align: center;
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #eee;
+                font-size: 14px;
+                color: #777;
+            }
+
+            /* responsive */
+            @media (max-width: 768px) {
+                .footer__col {
+                    flex: 1 1 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="header">
+            <div class="container">
+                <nav class="navbar">
+                    <div class="navbar__logo">
+                        <i data-lucide="lightbulb"></i>
+                    </div>
+
+                    <ul class="navbar__menu">
+                        <li><a class="navbar__link" href="#mainheader">Home</a></li>
+                        <li><a class="navbar__link" href="#services">Services</a></li>
+                        <li><a class="navbar__link" href="#about">About</a></li>
+                        <li><a class="navbar__link" href="#contact">Contact</a></li>
+                    </ul>
+
+                    <div class="navbar__cta">
+                        <a href="#" class="navbar__button">HANDYMAN</a>
+                    </div>
+                </nav>
+            </div>
+
+            <section class="showcase">
+                <div class="showcase__content">
+                    <h1 class="showcase__title">Historias que empiezan con una sonrisa</h1>
+                    <p class="showcase__text">
+                        En HANDYMAN ofrecemos soluciones profesionales para el hogar y la empresa.
+                    </p>
+                    <a href="#services" class="showcase__btn">Services</a>
+                </div>
+            </section>
+        </header>
+
+        <section class="about">
+            <div class="container">
+                <div class="about__row">
+                    <!-- imagen -->
+                    <div class="about__image"></div>
+
+                    <!-- contenido -->
+                    <div class="about__content">
+                        <h2 class="about__title">While Smiles Blossom into Stories.</h2>
+
+                        <p class="about__text">We create professional solutions for homes and businesses.</p>
+
+                        <a href="#" class="about__btn">Read More</a>
+
+                        <!-- mini cards -->
+                        <div class="about__features">
+                            <div class="about__feature">
+                                <h3 class="about__feature-title">Calidad Garantizada</h3>
+                                <p class="about__feature-text">
+                                    Ofrecemos servicios confiables con materiales de alta calidad.
+                                </p>
+                            </div>
+
+                            <div class="about__feature">
+                                <h3 class="about__feature-title">Atención Rápida</h3>
+                                <p class="about__feature-text">Respondemos de manera eficiente a tus necesidades.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="container">
+                <!-- título -->
+                <h2 class="services__title">Our Services</h2>
+
+                <!-- grid -->
+                <div class="services__grid">
+                    <div class="services__card">
+                        <img src="iimg/drill.webp" alt="" class="services__img" />
+                        <h3 class="services__card-title">Repair</h3>
+                        <p class="services__card-text">Fast and reliable fixes.</p>
+                    </div>
+
+                    <div class="services__card">
+                        <img src="iimg/C3.webp" alt="" class="services__img" />
+                        <h3 class="services__card-title">Install</h3>
+                        <p class="services__card-text">Professional setup service.</p>
+                    </div>
+
+                    <div class="services__card">
+                        <img src="iimg/HANDY.jpg" alt="" class="services__img" />
+                        <h3 class="services__card-title">Maintain</h3>
+                        <p class="services__card-text">Keep things running smooth.</p>
+                    </div>
+                </div>
+
+                <!-- botón -->
+                <div class="services__cta">
+                    <a href="#" class="services__btn">View More</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="banner">
+            <div class="container">
+                <div class="banner__row">
+                    <!-- Imagen izquierda -->
+                    <div class="banner__image"></div>
+
+                    <!-- Contenido derecha -->
+                    <div class="banner__content">
+                        <h2 class="banner__title">Soluciones que transforman tu espacio</h2>
+                        <p class="banner__text">
+                            Ofrecemos servicios profesionales para mejorar tu hogar con calidad y rapidez.
+                        </p>
+
+                        <!-- Slider -->
+                        <div class="banner__slider">
+                            <img src="iimg/images.jpg" class="banner__slide banner__slide--active" />
+                            <img src="iimg/2804794-handyman.jpg" class="banner__slide" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="testimonials__title">Happy Clients</h2>
+
+                <div class="testimonials__row">
+                    <div class="testimonials__col">
+                        <div class="testimonials__card">
+                            <p class="testimonials__text">"Excelente servicio, muy profesionales."</p>
+                            <h4 class="testimonials__name">- Oriana Ortega</h4>
+                        </div>
+                    </div>
+
+                    <div class="testimonials__col">
+                        <div class="testimonials__card">
+                            <p class="testimonials__text">"Rápidos y confiables, los recomiendo."</p>
+                            <h4 class="testimonials__name">- Loren Gaitán</h4>
+                        </div>
+                    </div>
+
+                    <div class="testimonials__col">
+                        <div class="testimonials__card">
+                            <p class="testimonials__text">"Trabajo impecable, volveré a contratar."</p>
+                            <h4 class="testimonials__name">- Carla Lambert</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonials__actions">
+                    <a href="#" class="btn">View More</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOG -->
+
+        <section class="blog">
+            <div class="container">
+                <!-- título -->
+                <h2 class="blog__title">Health Volunters</h2>
+
+                <div class="row blog__row">
+                    <!-- card 1 -->
+                    <div class="col blog__card">
+                        <div class="blog__card-img">
+                            <img src="iimg/volu.jpg" alt="Volunteers helping" />
+                        </div>
+                        <div class="blog__card-body">
+                            <h3 class="blog__card-title">Community Help</h3>
+                            <p class="blog__card-text">
+                                Volunteers providing essential medical assistance to rural communities.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- card 2 -->
+                    <div class="col blog__card">
+                        <div class="blog__card-img">
+                            <img src="iimg/volunt.jpg" alt="Medical team" />
+                        </div>
+                        <div class="blog__card-body">
+                            <h3 class="blog__card-title">Medical Campaigns</h3>
+                            <p class="blog__card-text">Organizing health campaigns to improve quality of life.</p>
+                        </div>
+                    </div>
+
+                    <!-- card 3 -->
+                    <div class="col blog__card">
+                        <div class="blog__card-img">
+                            <img src="iimg/voluntiers.jpg" alt="Health education" />
+                        </div>
+                        <div class="blog__card-body">
+                            <h3 class="blog__card-title">Health Education</h3>
+                            <p class="blog__card-text">Teaching communities about prevention and healthy habits.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="footer__row">
+                    <!-- logo / info -->
+                    <div class="footer__col">
+                        <h3 class="footer__logo">HANDYMAN</h3>
+                        <p class="footer__text">Soluciones profesionales para tu hogar y negocio.</p>
+                    </div>
+
+                    <!-- links -->
+                    <div class="footer__col">
+                        <h4 class="footer__title">Enlaces</h4>
+                        <ul class="footer__list">
+                            <li><a href="#mainheader">Home</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#about">About</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- contacto -->
+                    <div class="footer__col">
+                        <h4 class="footer__title">Contacto</h4>
+                        <p class="footer__text">📍 Panamá</p>
+                        <p class="footer__text">📞 +507 0000-0000</p>
+                        <p class="footer__text">✉️ info@handyman.com</p>
+                    </div>
+                </div>
+
+                <!-- bottom -->
+                <div class="footer__bottom">
+                    <p>© 2026 Handyman. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <script>
+        const slides = document.querySelectorAll(".banner__slide");
+        let index = 0;
+
+        setInterval(() => {
+            slides[index].classList.remove("banner__slide--active");
+            index = (index + 1) % slides.length;
+            slides[index].classList.add("banner__slide--active");
+        }, 3000);
+    </script>
+</html>
