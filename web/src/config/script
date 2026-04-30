@@ -1,0 +1,25 @@
+CREATE TABLE servicios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    especialidad VARCHAR(100),
+    telefono VARCHAR(20),
+    descripcion TEXT,
+    imagen VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+INSERT INTO servicios (nombre, especialidad, telefono, descripcion, imagen) VALUES
+('Carlos Pérez', 'Electricista', '50760000001', 'Instalaciones eléctricas, reparación de cortocircuitos y mantenimiento general.', 'electricista.jpg'),
+
+('Juan Gómez', 'Plomero', '50760000002', 'Reparación de tuberías, fugas de agua y sistemas de drenaje.', 'plomero.jpg'),
+
+('Luis Rodríguez', 'Carpintero', '50760000003', 'Fabricación y reparación de muebles de madera a medida.', 'carpintero.jpg'),
+
+('Miguel Sánchez', 'Pintor', '50760000004', 'Pintura de interiores y exteriores con acabados profesionales.', 'pintor.jpg'),
+
+('José Martínez', 'Técnico en aire acondicionado', '50760000005', 'Instalación y mantenimiento de sistemas de aire acondicionado.', 'aire.jpg'),
+
+('Pedro López', 'Albañil', '50760000006', 'Construcción, remodelación y trabajos de albañilería.', 'albanil.jpg');

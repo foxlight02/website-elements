@@ -1,0 +1,24 @@
+RewriteEngine On
+
+# 🚫 Ignorar archivos y carpetas reales
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# 🏠 HOME
+RewriteRule ^home/?$ index.php?entidad=home&action=inicio [QSA,L]
+
+# 📖 ABOUT
+RewriteRule ^about/?$ index.php?entidad=about&action=inicio [QSA,L]
+
+# 📩 CONTACTO
+RewriteRule ^contacto/?$ index.php?entidad=contacto&action=inicio [QSA,L]
+RewriteRule ^contacto/enviar/?$ index.php?entidad=contacto&action=enviar [QSA,L]
+
+# ⚙️ SERVICIOS
+RewriteRule ^servicios/?$ index.php?entidad=servicios&action=inicio [QSA,L]
+RewriteRule ^servicios/new/?$ index.php?entidad=servicios&action=new [QSA,L]
+RewriteRule ^servicios/guardar/?$ index.php?entidad=servicios&action=guardar [QSA,L]
+RewriteRule ^servicios/([0-9]+)/edit/?$ index.php?entidad=servicios&action=edit&id=$1 [QSA,L]
+RewriteRule ^servicios/([0-9]+)/update/?$ index.php?entidad=servicios&action=update&id=$1 [QSA,L]
+RewriteRule ^servicios/([0-9]+)/delete/?$ index.php?entidad=servicios&action=delete&id=$1 [QSA,L]
+RewriteRule ^servicios/([0-9]+)/?$ index.php?entidad=servicios&action=show&id=$1 [QSA,L]
