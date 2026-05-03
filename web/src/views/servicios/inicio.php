@@ -212,7 +212,7 @@
         const card = this.closest(".services__card");
         const container = document.querySelector(".services");
 
-        // 🚫 Evitar eliminar mientras se edita
+        // 🚫 Seguridad: No borrar si hay otra edición activa
         if (container.classList.contains("editando")) {
             alert("Termina la edición antes de eliminar.");
             return;
@@ -221,15 +221,16 @@
         const idServicio = card.querySelector('input[name="id"]').value;
         const nombreServicio = card.querySelector('.card-nombre').textContent;
 
-        // Confirmación
-        const confirmar = confirm(`¿Eliminar: "${nombreServicio}"?`);
-
+        // Confirmación personalizada
+        const confirmar = confirm(`¿Estás seguro de eliminar: "${nombreServicio}"?`);
         if (!confirmar) return;
 
-        // 🔄 Feedback visual inmediato
+        // 🔄 Feedback visual
         this.disabled = true;
+        const textoOriginal = this.textContent;
         this.textContent = "Eliminando...";
 
+        // Petición al servidor
         fetch("/servicios/delete", {
             method: "POST",
             headers: {
@@ -238,14 +239,12 @@
             body: JSON.stringify({ id: idServicio })
         })
         .then(res => {
-            if (!res.ok) throw new Error("Error HTTP");
+            if (!res.ok) throw new Error("Error en la respuesta del servidor");
             return res.json();
         })
         .then(data => {
-
             if (data.success) {
-
-                // Animación suave
+                // Animación de salida
                 card.style.transition = "all 0.4s ease";
                 card.style.opacity = "0";
                 card.style.transform = "scale(0.8)";
@@ -253,22 +252,17 @@
                 setTimeout(() => {
                     card.remove();
                 }, 400);
-
             } else {
-                throw new Error(data.message || "Error al eliminar");
+                throw new Error(data.message || "Error desconocido");
             }
-
         })
         .catch(err => {
             console.error(err);
             alert("❌ " + err.message);
-
+            // Revertir cambios en el botón si falla
             this.disabled = false;
-            this.textContent = "Eliminar";
+            this.textContent = textoOriginal;
         });
-
     });
-
 });
-
 </script>

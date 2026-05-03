@@ -117,39 +117,36 @@ class ServiciosController
         header("Content-Type: application/json");
 
         try {
-            // Leer JSON o POST
+            // Leer datos del cuerpo de la petición (JSON)
             $json = file_get_contents("php://input");
             $datos = json_decode($json, true);
 
+            // Si no es JSON, intentar leer desde $_POST tradicional
             if (!$datos) {
                 $datos = $_POST;
             }
 
-            // Validar ID
+            // Validar y limpiar ID
             $id = isset($datos["id"]) ? (int) $datos["id"] : 0;
 
             if ($id <= 0) {
                 throw new Exception("ID inválido.");
             }
 
-            // (Opcional) Verificar existencia
-            // $existe = \Models\Servicio::find($id);
-            // if (!$existe) throw new Exception("No existe.");
-
-            // Eliminar
-            $resultado = \Models\Servicio::delete($id);
+            // Ejecutar eliminación en el Modelo
+            $resultado = Servicio::delete($id);
 
             if (!$resultado) {
-                throw new Exception("No se pudo eliminar.");
+                throw new Exception("No se pudo eliminar el registro.");
             }
 
+            // Respuesta de éxito
             echo json_encode([
                 "success" => true,
                 "message" => "Servicio eliminado correctamente.",
             ]);
         } catch (Exception $e) {
             http_response_code(400);
-
             echo json_encode([
                 "success" => false,
                 "message" => $e->getMessage(),

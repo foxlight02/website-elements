@@ -80,7 +80,7 @@ class Servicio
         $conn = $db->getConnection();
 
         $stmt = $conn->prepare("DELETE FROM servicios WHERE id = :id");
-        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
