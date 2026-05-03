@@ -1,23 +1,21 @@
 <style>
-    .modal {
-        display: none;
-        /* oculto por defecto */
-        position: fixed;
-        /* 🔥 se sobrepone a TODO */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        /* fondo oscuro */
+    /* Fondo cuando editas */
+    .services.editando .services__card {
+        opacity: 0.3;
+        transform: scale(0.95);
+        pointer-events: none;
+        transition: 0.3s;
     }
 
-    .modal__content {
-        background: white;
-        padding: 20px;
-        width: 400px;
-        margin: 10% auto;
-        border-radius: 10px;
+    /* Card activa */
+    .services__card.activa {
+        opacity: 1 !important;
+        border: 2px solid #007bff;
+        transform: scale(1) !important;
+        pointer-events: auto !important;
+        z-index: 10;
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
 </style>
@@ -26,106 +24,251 @@
     <div class="services__grid">
 
         <?php foreach ($servicios as $s): ?>
-        <div class="services__card" data-id="<?= $s["id"] ?>">
 
-            <img src="<?= URL_PATH ?>/assets/img/<?= $s["imagen"] ?>">
+        <form method="POST" action="/servicios/actualizar" class="services__card">
+
+            <!-- ID oculto -->
+            <input type="hidden" name="id" value="<?= $s["id"] ?>">
+
+            <img src="/assets/img/<?= $s["imagen"] ?>">
 
             <h3 class="card-nombre"><?= $s["nombre"] ?></h3>
             <p class="card-especialidad"><?= $s["especialidad"] ?></p>
             <p class="card-telefono"><?= $s["telefono"] ?></p>
             <p class="card-descripcion"><?= $s["descripcion"] ?></p>
 
-            <button class="btn-edit" data-id="<?= $s["id"] ?>" data-nombre="<?= $s[
-    "nombre"
-] ?>" data-especialidad="<?= $s["especialidad"] ?>" data-telefono="<?= $s["telefono"] ?>" data-descripcion="<?= $s[
-    "descripcion"
-] ?>" data-imagen="<?= $s["imagen"] ?>">
-                Editar
-            </button>
+            <button type="button" class="btn-edit">Editar</button>
+            <button type="button" class="btn-delete">Eliminar</button>
+        </form>
 
-        </div>
         <?php endforeach; ?>
 
     </div>
 </section>
 
-<!-- MODAL -->
-<div id="modalEdit" class="modal">
-    <div class="modal__content">
-
-        <span id="closeModal">X</span>
-
-        <form id="formEdit" enctype="multipart/form-data">
-
-            <input type="hidden" name="id" id="edit_id">
-            <input type="hidden" name="imagen_actual" id="edit_imagen_actual">
-
-            <input type="text" name="nombre" id="edit_nombre">
-            <input type="text" name="especialidad" id="edit_especialidad">
-            <input type="text" name="telefono" id="edit_telefono">
-            <textarea name="descripcion" id="edit_descripcion"></textarea>
-
-            <input type="file" name="imagen">
-
-            <button type="submit">Guardar</button>
-
-        </form>
-
-    </div>
-</div>
-
 <script>
-    const URL_PATH = "<?= URL_PATH ?>";
+    document.querySelectorAll(".btn-edit").forEach(boton => {
 
-    const modal = document.getElementById("modalEdit");
+        boton.addEventListener("click", function(e) {
+            e.preventDefault();
 
-    // abrir modal
-    document.querySelectorAll(".btn-edit").forEach(btn => {
-        btn.addEventListener("click", () => {
+            const card = this.closest(".services__card");
+            const container = document.querySelector(".services");
 
-            edit_id.value = btn.dataset.id;
-            edit_nombre.value = btn.dataset.nombre;
-            edit_especialidad.value = btn.dataset.especialidad;
-            edit_telefono.value = btn.dataset.telefono;
-            edit_descripcion.value = btn.dataset.descripcion;
-            edit_imagen_actual.value = btn.dataset.imagen;
+            // ======================================================
+            // 🔵 GUARDAR (cuando ya está editando)
+            // ======================================================
+            if (this.classList.contains("editando")) {
 
-            modal.style.display = "block";
-        });
-    });
+                const formData = new FormData(card);
 
-    // submit
-    formEdit.addEventListener("submit", async (e) => {
-        e.preventDefault();
+                this.disabled = true;
+                this.textContent = "Guardando...";
 
-        const data = new FormData(formEdit);
-        const id = data.get("id");
+                fetch("/servicios/actualizar", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error("Error HTTP");
+                        return res.json();
+                    })
+                    .then(data => {
 
-        const res = await fetch(`${URL_PATH}/servicios/update/${id}`, {
-            method: "POST",
-            body: data
-        });
+                        console.log("Respuesta:", data);
 
-        const json = await res.json();
+                        if (data.success) {
 
-        if (json.status === "ok") {
+                            // Volver a texto
+                            card.querySelector('input[name="nombre"]').outerHTML =
+                                `<h3 class="card-nombre">${formData.get("nombre")}</h3>`;
 
-            const card = document.querySelector(`.services__card[data-id='${id}']`);
+                            card.querySelector('input[name="especialidad"]').outerHTML =
+                                `<p class="card-especialidad">${formData.get("especialidad")}</p>`;
 
-            card.querySelector(".card-nombre").innerText = data.get("nombre");
-            card.querySelector(".card-especialidad").innerText = data.get("especialidad");
-            card.querySelector(".card-telefono").innerText = data.get("telefono");
-            card.querySelector(".card-descripcion").innerText = data.get("descripcion");
+                            card.querySelector('input[name="telefono"]').outerHTML =
+                                `<p class="card-telefono">${formData.get("telefono")}</p>`;
 
-            if (json.imagen) {
-                card.querySelector("img").src =
-                    `${URL_PATH}/assets/img/${json.imagen}?t=${Date.now()}`;
+                            card.querySelector('textarea[name="descripcion"]').outerHTML =
+                                `<p class="card-descripcion">${formData.get("descripcion")}</p>`;
+
+                            // Reset estado
+                            this.textContent = "Editar";
+                            this.classList.remove("editando");
+                            this.disabled = false;
+
+                            card.classList.remove("activa");
+                            container.classList.remove("editando");
+
+                            const cancel = card.querySelector(".btn-cancel");
+                            if (cancel) cancel.remove();
+
+                        } else {
+                            alert(data.error || "Error al actualizar");
+                            this.disabled = false;
+                            this.textContent = "Guardar";
+                        }
+
+                    })
+                    .catch(err => {
+                        console.error("Error:", err);
+                        alert("Error de conexión o servidor");
+                        this.disabled = false;
+                        this.textContent = "Guardar";
+                    });
+
+                return;
             }
 
-            modal.style.display = "none";
-        }
+            // ======================================================
+            // 🟢 EDITAR (primer click)
+            // ======================================================
+
+            container.classList.add("editando");
+
+            document.querySelectorAll(".services__card").forEach(c => {
+                c.classList.remove("activa");
+            });
+
+            card.classList.add("activa");
+
+            this.classList.add("editando");
+
+            // Guardar valores originales
+            const nombre = card.querySelector(".card-nombre").textContent;
+            const especialidad = card.querySelector(".card-especialidad").textContent;
+            const telefono = card.querySelector(".card-telefono").textContent;
+            const descripcion = card.querySelector(".card-descripcion").textContent;
+
+            card.dataset.nombre = nombre;
+            card.dataset.especialidad = especialidad;
+            card.dataset.telefono = telefono;
+            card.dataset.descripcion = descripcion;
+
+            // Convertir a inputs
+            card.querySelector(".card-nombre").outerHTML =
+                `<input type="text" name="nombre" value="${nombre}">`;
+
+            card.querySelector(".card-especialidad").outerHTML =
+                `<input type="text" name="especialidad" value="${especialidad}">`;
+
+            card.querySelector(".card-telefono").outerHTML =
+                `<input type="text" name="telefono" value="${telefono}">`;
+
+            card.querySelector(".card-descripcion").outerHTML =
+                `<textarea name="descripcion">${descripcion}</textarea>`;
+
+            this.textContent = "Guardar";
+
+            // ======================================================
+            // 🔴 BOTÓN CANCELAR
+            // ======================================================
+            if (!card.querySelector(".btn-cancel")) {
+
+                const btnCancel = document.createElement("button");
+                btnCancel.textContent = "Cancelar";
+                btnCancel.type = "button";
+                btnCancel.classList.add("btn-cancel");
+
+                card.appendChild(btnCancel);
+
+                btnCancel.addEventListener("click", function() {
+
+                    card.querySelector('input[name="nombre"]').outerHTML =
+                        `<h3 class="card-nombre">${card.dataset.nombre}</h3>`;
+
+                    card.querySelector('input[name="especialidad"]').outerHTML =
+                        `<p class="card-especialidad">${card.dataset.especialidad}</p>`;
+
+                    card.querySelector('input[name="telefono"]').outerHTML =
+                        `<p class="card-telefono">${card.dataset.telefono}</p>`;
+
+                    card.querySelector('textarea[name="descripcion"]').outerHTML =
+                        `<p class="card-descripcion">${card.dataset.descripcion}</p>`;
+
+                    // Reset botón editar
+                    const btnEdit = card.querySelector(".btn-edit");
+                    btnEdit.textContent = "Editar";
+                    btnEdit.classList.remove("editando");
+                    btnEdit.disabled = false;
+
+                    // Reset UI
+                    card.classList.remove("activa");
+                    container.classList.remove("editando");
+
+                    this.remove();
+                });
+            }
+
+        });
+
     });
 
-</script>
+  document.querySelectorAll(".btn-delete").forEach(boton => {
+
+    boton.addEventListener("click", function(e) {
+        e.preventDefault();
+
+        const card = this.closest(".services__card");
+        const container = document.querySelector(".services");
+
+        // 🚫 Evitar eliminar mientras se edita
+        if (container.classList.contains("editando")) {
+            alert("Termina la edición antes de eliminar.");
+            return;
+        }
+
+        const idServicio = card.querySelector('input[name="id"]').value;
+        const nombreServicio = card.querySelector('.card-nombre').textContent;
+
+        // Confirmación
+        const confirmar = confirm(`¿Eliminar: "${nombreServicio}"?`);
+
+        if (!confirmar) return;
+
+        // 🔄 Feedback visual inmediato
+        this.disabled = true;
+        this.textContent = "Eliminando...";
+
+        fetch("/servicios/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id: idServicio })
+        })
+        .then(res => {
+            if (!res.ok) throw new Error("Error HTTP");
+            return res.json();
+        })
+        .then(data => {
+
+            if (data.success) {
+
+                // Animación suave
+                card.style.transition = "all 0.4s ease";
+                card.style.opacity = "0";
+                card.style.transform = "scale(0.8)";
+
+                setTimeout(() => {
+                    card.remove();
+                }, 400);
+
+            } else {
+                throw new Error(data.message || "Error al eliminar");
+            }
+
+        })
+        .catch(err => {
+            console.error(err);
+            alert("❌ " + err.message);
+
+            this.disabled = false;
+            this.textContent = "Eliminar";
+        });
+
+    });
+
+});
 
 </script>

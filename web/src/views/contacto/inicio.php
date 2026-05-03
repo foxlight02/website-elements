@@ -1,18 +1,5 @@
 
 <style>
-/* Fondo general */
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f9;
-    margin: 0;
-    padding: 40px;
-}
-
-/* Contenedor */
-h2 {
-    text-align: center;
-    color: #333;
-}
 
 /* Formulario tipo card */
 #formContacto {

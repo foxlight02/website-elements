@@ -46,20 +46,32 @@ class Servicio
         nombre = :nombre,
         especialidad = :especialidad,
         telefono = :telefono,
-        descripcion = :descripcion,
-        imagen = :imagen
-        WHERE id = :id";
+        descripcion = :descripcion";
+
+        // Si viene imagen (opcional)
+        if (!empty($data["imagen"])) {
+            $sql .= ", imagen = :imagen";
+        }
+
+        $sql .= " WHERE id = :id";
 
         $stmt = $conn->prepare($sql);
 
-        return $stmt->execute([
-            ":nombre" => $data["nombre"],
-            ":especialidad" => $data["especialidad"],
-            ":telefono" => $data["telefono"],
-            ":descripcion" => $data["descripcion"],
-            ":imagen" => $data["imagen"],
-            ":id" => $id,
-        ]);
+        $params = [
+            ":nombre" => $data["nombre"] ?? "",
+            ":especialidad" => $data["especialidad"] ?? "",
+            ":telefono" => $data["telefono"] ?? "",
+            ":descripcion" => $data["descripcion"] ?? "",
+            ":id" => (int) $id,
+        ];
+
+        if (!empty($data["imagen"])) {
+            $params[":imagen"] = $data["imagen"];
+        }
+
+        $stmt->execute($params);
+
+        return $stmt->rowCount() > 0;
     }
     // 🗑 eliminar
     public static function delete($id)

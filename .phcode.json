@@ -1,6 +1,6 @@
 {
-    "livePreviewUseDevServer": true,
-    "livePreviewServerURL": "http://handyman.test/home",
+    "livePreviewUseDevServer": false,
+    "livePreviewServerURL": "http://handyman.test",
     "livePreviewServerProjectPath": "C:/wamp64/www/project65/website/web/public",
     "livePreviewHotReloadSupported": false,
     "livePreviewFramework": "Custom"
