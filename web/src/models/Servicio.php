@@ -37,42 +37,41 @@ class Servicio
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function update($id, $data)
-    {
-        $db = new Database();
-        $conn = $db->getConnection();
+   public static function update($id, $data)
+{
+    $db = new Database();
+    $conn = $db->getConnection();
 
-        $sql = "UPDATE servicios SET
+    $sql = "UPDATE servicios SET
         nombre = :nombre,
         especialidad = :especialidad,
         telefono = :telefono,
         descripcion = :descripcion";
 
-        // Si viene imagen (opcional)
-        if (!empty($data["imagen"])) {
-            $sql .= ", imagen = :imagen";
-        }
-
-        $sql .= " WHERE id = :id";
-
-        $stmt = $conn->prepare($sql);
-
-        $params = [
-            ":nombre" => $data["nombre"] ?? "",
-            ":especialidad" => $data["especialidad"] ?? "",
-            ":telefono" => $data["telefono"] ?? "",
-            ":descripcion" => $data["descripcion"] ?? "",
-            ":id" => (int) $id,
-        ];
-
-        if (!empty($data["imagen"])) {
-            $params[":imagen"] = $data["imagen"];
-        }
-
-        $stmt->execute($params);
-
-        return $stmt->rowCount() > 0;
+    if (!empty($data["imagen"])) {
+        $sql .= ", imagen = :imagen";
     }
+
+    $sql .= " WHERE id = :id";
+
+    $stmt = $conn->prepare($sql);
+
+    $params = [
+        ":nombre" => $data["nombre"] ?? "",
+        ":especialidad" => $data["especialidad"] ?? "",
+        ":telefono" => $data["telefono"] ?? "",
+        ":descripcion" => $data["descripcion"] ?? "",
+        ":id" => (int)$id,
+    ];
+
+    if (!empty($data["imagen"])) {
+        $params[":imagen"] = $data["imagen"];
+    }
+
+    $ok = $stmt->execute($params);
+
+    return $ok; // ✔ mejor que rowCount
+}
     // 🗑 eliminar
     public static function delete($id)
     {

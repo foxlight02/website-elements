@@ -30,7 +30,7 @@
             <!-- ID oculto -->
             <input type="hidden" name="id" value="<?= $s["id"] ?>">
 
-            <img src="/assets/img/<?= $s["imagen"] ?>">
+            <img src="/assets/img/<?= $s["imagen"] ?>" class="img">
 
             <h3 class="card-nombre"><?= $s["nombre"] ?></h3>
             <p class="card-especialidad"><?= $s["especialidad"] ?></p>
@@ -38,7 +38,7 @@
             <p class="card-descripcion"><?= $s["descripcion"] ?></p>
 
             <button type="button" class="btn-edit">Editar</button>
-            <button type="button" class="btn-delete">Eliminar</button>
+            <button type="button" class="btn-delete">EliminarRRR</button>
         </form>
 
         <?php endforeach; ?>
@@ -139,11 +139,15 @@
             const especialidad = card.querySelector(".card-especialidad").textContent;
             const telefono = card.querySelector(".card-telefono").textContent;
             const descripcion = card.querySelector(".card-descripcion").textContent;
+            const img = card.querySelector(".img");
+            const file = card.querySelector(".file");
 
             card.dataset.nombre = nombre;
             card.dataset.especialidad = especialidad;
             card.dataset.telefono = telefono;
             card.dataset.descripcion = descripcion;
+
+
 
             // Convertir a inputs
             card.querySelector(".card-nombre").outerHTML =
@@ -204,65 +208,68 @@
 
     });
 
-  document.querySelectorAll(".btn-delete").forEach(boton => {
+    document.querySelectorAll(".btn-delete").forEach(boton => {
 
-    boton.addEventListener("click", function(e) {
-        e.preventDefault();
+        boton.addEventListener("click", function(e) {
+            e.preventDefault();
 
-        const card = this.closest(".services__card");
-        const container = document.querySelector(".services");
+            const card = this.closest(".services__card");
+            const container = document.querySelector(".services");
 
-        // 🚫 Seguridad: No borrar si hay otra edición activa
-        if (container.classList.contains("editando")) {
-            alert("Termina la edición antes de eliminar.");
-            return;
-        }
-
-        const idServicio = card.querySelector('input[name="id"]').value;
-        const nombreServicio = card.querySelector('.card-nombre').textContent;
-
-        // Confirmación personalizada
-        const confirmar = confirm(`¿Estás seguro de eliminar: "${nombreServicio}"?`);
-        if (!confirmar) return;
-
-        // 🔄 Feedback visual
-        this.disabled = true;
-        const textoOriginal = this.textContent;
-        this.textContent = "Eliminando...";
-
-        // Petición al servidor
-        fetch("/servicios/delete", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id: idServicio })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("Error en la respuesta del servidor");
-            return res.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Animación de salida
-                card.style.transition = "all 0.4s ease";
-                card.style.opacity = "0";
-                card.style.transform = "scale(0.8)";
-
-                setTimeout(() => {
-                    card.remove();
-                }, 400);
-            } else {
-                throw new Error(data.message || "Error desconocido");
+            // 🚫 Seguridad: No borrar si hay otra edición activa
+            if (container.classList.contains("editando")) {
+                alert("Termina la edición antes de eliminar.");
+                return;
             }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("❌ " + err.message);
-            // Revertir cambios en el botón si falla
-            this.disabled = false;
-            this.textContent = textoOriginal;
+
+            const idServicio = card.querySelector('input[name="id"]').value;
+            const nombreServicio = card.querySelector('.card-nombre').textContent;
+
+            // Confirmación personalizada
+            const confirmar = confirm(`¿Estás seguro de eliminar: "${nombreServicio}"?`);
+            if (!confirmar) return;
+
+            // 🔄 Feedback visual
+            this.disabled = true;
+            const textoOriginal = this.textContent;
+            this.textContent = "Eliminando...";
+
+            // Petición al servidor
+            fetch("/servicios/delete", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: idServicio
+                    })
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Error en la respuesta del servidor");
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Animación de salida
+                        card.style.transition = "all 0.4s ease";
+                        card.style.opacity = "0";
+                        card.style.transform = "scale(0.8)";
+
+                        setTimeout(() => {
+                            card.remove();
+                        }, 400);
+                    } else {
+                        throw new Error(data.message || "Error desconocido");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("❌ " + err.message);
+                    // Revertir cambios en el botón si falla
+                    this.disabled = false;
+                    this.textContent = textoOriginal;
+                });
         });
     });
-});
+
 </script>

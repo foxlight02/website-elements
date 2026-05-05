@@ -23,3 +23,6 @@ INSERT INTO servicios (nombre, especialidad, telefono, descripcion, imagen) VALU
 ('José Martínez', 'Técnico en aire acondicionado', '50760000005', 'Instalación y mantenimiento de sistemas de aire acondicionado.', 'aire.jpg'),
 
 ('Pedro López', 'Albañil', '50760000006', 'Construcción, remodelación y trabajos de albañilería.', 'albanil.jpg');
+
+INSERT INTO servicios (nombre, especialidad, telefono, descripcion, imagen)
+VALUES ('Jose Fernando', 'Electricista', '1234-5678', 'Reparaciones eléctricas en general', 'electricista.jpg');
